@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+
+        
+
+        div#container * {
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 45px;
+
+        }
+
+        div#container {
+            margin: 0 auto;
+            height: 100%;
+            width: 100%;
+        }
+
+        main {
+            padding-top:50%;
+            padding-bottom:50%;
+            padding-left:10%;
+            padding-right:10%;
+        }
+
+
+    
+
+    
+
+    </style>
+</head>
+<body id="a">
+    <div id="container">
+        <main :style="back_color">
+
+            <h> {{ message }} </h>
+            <br/>
+        </main>
+    </div>
+    <script>
+
+       Vue.createApp({
+        data() {
+            return {
+                message: "<%= message %>"
+            }
+        },
+        computed: {
+            back_color() {
+                const is_accept = "<%= accept %>" === "true" ? true : false;
+                
+                if (is_accept) {
+                    return {
+                        "background-color":"#3CB371"
+                    };
+                } else {
+                    return {
+                        "background-color": "#F06060"
+                    };
+                }
+
+            }
+        }
+
+       }).mount("div#container");       
+
+    </script>
+</body>
+</html>

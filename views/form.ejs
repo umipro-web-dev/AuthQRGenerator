@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入室用QRコード申請フォーム</title>
+    <style>
+        header {
+            background-color: rgb(215, 215, 215);
+            height: 70px;
+            border-bottom: 2px solid rgb(255, 255, 255);
+            border-left: 2px solid green;
+            border-right: 2px solid rgb(255, 255, 255);
+            margin-left: -10%;
+            margin-right: -10%;
+            display: flex;
+            align-items: center;
+        }
+
+        header img#logo {
+            margin-left: 70%;
+            zoom: 1.3;
+        }
+
+        header > a {
+            margin-left: 40px;
+            padding: 20px 0;
+            text-decoration: none;
+            color: #000;
+            font-weight: bolder;
+            
+        }
+
+        header > a:nth-child(2) {
+            height: 40%;
+            width: 10%;
+            text-align: center;
+            margin-left: 90px;
+        }
+
+        header > a:nth-child(3) {
+            height: 40%;
+            width: 10%;
+            text-align: center;
+            margin-left: 20px;
+        }
+
+        header > a:not(:nth-child(1)):hover {
+            background-color: rgb(139, 139, 139);
+            border-bottom: 5px solid#000;
+            border-radius: 5px;
+            transition: 0.5s;
+            color: #000;
+        }
+
+    
+
+
+        /* ここまで共通*/
+        main {
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+        }
+        section {
+            text-align: center;
+        }
+
+        form>button {
+            text-align: center !important;
+        }
+
+        h1{
+            border-bottom: 3px solid skyblue;
+            display: inline-block;
+            padding-top: 2em;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 1em;
+        }
+
+
+        @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+
+        form {
+            max-width: 420px;
+            margin: 50px auto;
+        }
+
+        section#details > p {
+            font-family: inherit;
+            font-size: 17px;
+        }
+
+        label > p {
+            width: 100%;
+            max-width: 248px;
+            letter-spacing: 0.05em;
+            font-weight: bolder;
+            font-size: 17px;
+        }
+
+        label > input {
+            color: black;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-left: 0px;
+            padding-left: 1em;
+            padding-right: 1em;
+            height: 48px;
+            flex: 1;
+            width: 150%;
+            max-width: 410px;
+            background: #eaedf2;
+            font-size: 18px;
+        }
+
+        label > input:focus {
+            border: 2px solid blue;
+        }
+        
+
+
+
+        label > select {
+            position: relative;
+            font-family: inherit;
+            background-color: transparent;
+            width: 110%;
+            padding: 10px 10px 10px 0;
+            font-size: 17px;
+            border-radius: 0;
+            border: none;
+            outline: none;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        }
+
+        label > select:focus {
+            outline: none;
+            border-bottom: 2px solid blue;
+        }
+
+        #submit {
+            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+            width: 80%;
+            background: #CC6666;
+            border-radius: 5px;
+            border: 0;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            transition: all 0.3s;
+            margin-top: 40px;
+            margin-left: 13%;
+            font-weight: 700;
+        }
+
+        #submit:hover {
+            background: #CC4949;
+        }
+
+        
+    </style>    
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css">
+    <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
+</head>
+
+<body>
+    <header>
+        <a href="/"><img src="/static/title.png" alt="ロゴ" width="70" height="70" id="logo"></a>
+        <a href="/">ホーム</a>
+        <a href="/form">申請フォーム</a>
+    </header>
+    <main>
+        <div id="content" v-if="show">
+        <section id="details">
+            <h1>入室用QRコード申請フォーム</h1>
+            <br />
+            <p>このフォームでは部屋への入室申請ができます。 </p>
+            <p> 以下のすべての項目に情報を入力してご送信ください。</p>
+            <p>審査結果につきましてはご入力いただいたメールアドレス宛にお知らせいたします。</p>
+        </section>
+        <form>
+            <label>
+                <p>お名前</p><input type="text" id="name" placeholder="例）田中太郎" required v-model="name">
+            </label>
+            <br /><br />
+            <label>
+                <p>生年月日</p><br><datetime :enable-time-picker="false" auto-apply format="yyyy-MM-dd" id="birth" placeholder="例）2000-01-01"
+                    required v-model="birth" model-type="format" locale="ja" >
+            </label>
+            <br /><br />
+            <label>
+                <p>お住まいの都道府県</p>
+                <select id="pref_name" required v-model="pref">
+                    <option value="" selected disabled>--選択してください--</option>
+                    <option value="北海道">北海道</option>
+                    <option value="青森県">青森県</option>
+                    <option value="岩手県">岩手県</option>
+                    <option value="宮城県">宮城県</option>
+                    <option value="秋田県">秋田県</option>
+                    <option value="山形県">山形県</option>
+                    <option value="福島県">福島県</option>
+                    <option value="茨城県">茨城県</option>
+                    <option value="栃木県">栃木県</option>
+                    <option value="群馬県">群馬県</option>
+                    <option value="埼玉県">埼玉県</option>
+                    <option value="千葉県">千葉県</option>
+                    <option value="東京都">東京都</option>
+                    <option value="神奈川県">神奈川県</option>
+                    <option value="新潟県">新潟県</option>
+                    <option value="富山県">富山県</option>
+                    <option value="石川県">石川県</option>
+                    <option value="福井県">福井県</option>
+                    <option value="山梨県">山梨県</option>
+                    <option value="長野県">長野県</option>
+                    <option value="岐阜県">岐阜県</option>
+                    <option value="静岡県">静岡県</option>
+                    <option value="愛知県">愛知県</option>
+                    <option value="三重県">三重県</option>
+                    <option value="滋賀県">滋賀県</option>
+                    <option value="京都府">京都府</option>
+                    <option value="大阪府">大阪府</option>
+                    <option value="兵庫県">兵庫県</option>
+                    <option value="奈良県">奈良県</option>
+                    <option value="和歌山県">和歌山県</option>
+                    <option value="鳥取県">鳥取県</option>
+                    <option value="島根県">島根県</option>
+                    <option value="岡山県">岡山県</option>
+                    <option value="広島県">広島県</option>
+                    <option value="山口県">山口県</option>
+                    <option value="徳島県">徳島県</option>
+                    <option value="香川県">香川県</option>
+                    <option value="愛媛県">愛媛県</option>
+                    <option value="高知県">高知県</option>
+                    <option value="福岡県">福岡県</option>
+                    <option value="佐賀県">佐賀県</option>
+                    <option value="長崎県">長崎県</option>
+                    <option value="熊本県">熊本県</option>
+                    <option value="大分県">大分県</option>
+                    <option value="宮崎県">宮崎県</option>
+                    <option value="鹿児島県">鹿児島県</option>
+                    <option value="沖縄県">沖縄県</option>
+                </select>
+            </label>
+            <br /><br />
+            <label>
+                <p>ご職業</p>
+                <select id="job" required v-model="job">
+                    <option value="" selected disabled>--選択してください--</option>
+                    <option value="公務員">公務員</option>
+                    <option value="経営者・役員">経営者・役員</option>
+                    <option value="会社員">会社員</option>
+                    <option value="自営業">自営業</option>
+                    <option value="専業主婦・主夫">専業主婦・主夫</option>
+                    <option value="パート・アルバイト">パート・アルバイト</option>
+                    <option value="学生">学生</option>
+                    <option value="その他">その他</option>
+                </select>
+            </label>
+            <br /><br />
+            <label>
+                <p>メールアドレス</p><input type="email" id="mail" placeholder="例）example@gmail.com" v-model="mail" required>
+            </label>
+            <br>
+            <br>
+            <label>
+                <p>入室予定時刻</p>
+                <datetime format="yyyy-MM-dd HH:mm" auto-apply id="enter_at" v-model="enter_at" placeholder="例）2023-01-01 09:00" model-type="format" locale="ja"/>
+            </label>
+            <button type="button" id="submit" @click="send_req">送信</button>
+        </form>
+    </div>
+    <div id="end" v-html="end_page"></div>
+    </main>
+    <script src="/static/front.js"></script>
+</body>
+
+</html>
